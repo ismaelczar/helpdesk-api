@@ -8,10 +8,6 @@ A base do projeto utiliza uma arquitetura sólida e escalável com **Node.js**, 
 
 ## 🗂️ Estrutura de Pastas
 
-A arquitetura do projeto é organizada em módulos que representam os domínios da aplicação.
-
-## 🗂️ Estrutura de Pastas
-
 ```
 .
 ├── @types                    # Tipagens globais e customizações do Express
