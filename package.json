@@ -1,0 +1,46 @@
+{
+	"name": "helpdesk-api",
+	"version": "1.0.0",
+	"main": "src/main/server.ts",
+	"repository": "https://github.com/ismaelczar/helpdesk-api.git",
+	"author": "ismael cezar <103972495+ismaelczar@users.noreply.github.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc && tsc-alias -p tsconfig.json",
+		"dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/main/server.ts",
+		"start": "node dist/main/server.js",
+		"typeorm": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource src/shared/providers/typeorm/config/ormConfig.ts",
+		"typeorm:migration:create": "node scripts/create-migration.js",
+		"typeorm:migration:run": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run --dataSource src/shared/providers/typeorm/config/ormConfig.ts",
+		"typeorm:migration:revert": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert --dataSource src/shared/providers/typeorm/config/ormConfig.ts",
+		"test": "jest"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.14.2",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.0",
+		"express": "^5.1.0",
+		"fast-glob": "^3.3.3",
+		"ioredis": "^5.6.1",
+		"jsonwebtoken": "^9.0.2",
+		"pg": "^8.16.3",
+		"reflect-metadata": "^0.2.2",
+		"tsyringe": "^4.10.0",
+		"typeorm": "^0.3.25",
+		"zod": "^4.0.5"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.1.2",
+		"@types/bcrypt": "^6.0.0",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/node": "^24.0.14",
+		"ts-node-dev": "^2.0.0",
+		"tsc-alias": "^1.8.10",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.8.3"
+	}
+}
