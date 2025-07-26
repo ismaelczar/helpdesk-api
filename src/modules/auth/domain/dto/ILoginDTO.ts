@@ -1,7 +1,12 @@
-import { IsEmail } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
 
 export class ILoginDTO {
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    password!: string;
+
     @IsEmail(
         {},
         {
@@ -10,7 +15,4 @@ export class ILoginDTO {
     )
     @ApiProperty()
     email!: string;
-
-    @ApiProperty()
-    password!: string;
 }
