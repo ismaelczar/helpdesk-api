@@ -2,10 +2,10 @@ import { inject, injectable } from "tsyringe";
 import type { DataSource, Repository } from "typeorm";
 import type { CreateUserDTO } from "../../domain/dto/CreateUserDTO";
 import { User } from "../../domain/entities/User";
-import type { IUserRepository } from "../../domain/repositories/IUserRepository";
+import type { IUsersRepository } from "../../domain/repositories/IUserRepository";
 
 @injectable()
-export class UserRepository implements IUserRepository {
+export class UsersRepository implements IUsersRepository {
     ormRepo: Repository<User>;
 
     constructor(@inject("DataSource") dataSource: DataSource) {

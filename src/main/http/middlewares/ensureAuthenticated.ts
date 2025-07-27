@@ -1,6 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
+interface TokenPayload {
+    sub: string;
+    email: string;
+}
+
 export function ensureAuthenticated(
     req: Request,
     res: Response,
@@ -15,10 +20,11 @@ export function ensureAuthenticated(
     try {
         // biome-ignore lint/style/noNonNullAssertion: <TOKEN EXIST>
         const decoded = verify(token, process.env.JWT_SECRET!);
+        const { sub } = decoded as TokenPayload;
 
         req.user = {
-            id: (decoded as any).id,
-            email: (decoded as any).email,
+            id: sub,
+            email: sub,
         };
 
         return next();
