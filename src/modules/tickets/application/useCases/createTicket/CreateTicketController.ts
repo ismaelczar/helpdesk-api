@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { container } from "tsyringe";
 import { ensureAuthenticated } from "@/main/http/middlewares/ensureAuthenticated";
 import { CreateTicketDTO } from "@/modules/tickets/domain/dto/CreateTicketDTO";
+import { CreateTicketResponse } from "@/modules/tickets/domain/dto/CreateTicketResponse";
 import { ApiResponse } from "@/shared/http/docs/decorators/ApiResponse";
 import { Body } from "@/shared/http/docs/decorators/Body";
 import { Controller } from "@/shared/http/docs/decorators/Controller";
@@ -14,7 +15,7 @@ export class CreateTicketController {
     @Post("/")
     @ApiResponse({
         statusCode: 200,
-        dtoClass: CreateTicketDTO, //TODO: CRIAR UM DTO PARA RESPOSTA.
+        dtoClass: CreateTicketResponse,
         description: "Chamado criado com sucesso",
     })
     @Body(CreateTicketDTO)

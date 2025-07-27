@@ -8,5 +8,5 @@ export interface ITicketsRepository {
         customer_id: string
     ): Promise<Ticket | null>;
 
-    createTicket(ticket: CreateTicketDTO): Promise<Ticket>;
+    createTicket(ticket: CreateTicketDTO): Promise<Ticket | null>;
 }

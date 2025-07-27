@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsIn, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
 
 export class CreateTicketDTO {
@@ -15,8 +15,9 @@ export class CreateTicketDTO {
     description!: string;
 
     @IsNotEmpty()
+    @IsIn(["open", "in_progress", "closed", "pending"])
     @ApiProperty()
-    status!: string;
+    status!: "open" | "in_progress" | "closed" | "pending";
 
     @IsNotEmpty()
     @ApiProperty()
