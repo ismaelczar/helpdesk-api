@@ -2,8 +2,10 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
+import { Ticket } from "@/modules/tickets/domain/entities/Ticket";
 
 @Entity("customers")
 export class Customer {
@@ -24,4 +26,7 @@ export class Customer {
 
     @CreateDateColumn({ type: "timestamp with time zone" })
     updated_at!: Date;
+
+    @OneToMany(() => Ticket, (ticket) => ticket.customer)
+    tickets!: Ticket[];
 }
