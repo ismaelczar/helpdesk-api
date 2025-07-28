@@ -7,6 +7,8 @@ export interface ITicketsRepository {
         status: string,
         customer_id: string
     ): Promise<Ticket | null>;
+    findById(id: string): Promise<Ticket | null>;
 
     createTicket(ticket: CreateTicketDTO): Promise<Ticket | null>;
+    updateTicket(ticket: Partial<Ticket>): Promise<Ticket>;
 }

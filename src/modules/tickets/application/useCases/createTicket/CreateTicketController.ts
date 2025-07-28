@@ -14,7 +14,7 @@ import { CreateTicketUseCase } from "./CreateTicketUseCase";
 export class CreateTicketController {
     @Post("/")
     @ApiResponse({
-        statusCode: 200,
+        statusCode: 201,
         dtoClass: CreateTicketResponse,
         description: "Chamado criado com sucesso",
     })
@@ -28,6 +28,6 @@ export class CreateTicketController {
         const useCase = container.resolve(CreateTicketUseCase);
         const response = await useCase.execute(data, creatorId);
 
-        return res.status(200).json(response);
+        return res.status(201).json(response);
     }
 }
