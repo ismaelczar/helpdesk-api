@@ -10,7 +10,10 @@ export class CreateTicketUseCase {
         @inject("TicketsRepository")
         private readonly ticketsRepository: ITicketsRepository
     ) {}
-    async execute(data: CreateTicketDTO, creatorId: string): Promise<Ticket> {
+    async execute(
+        data: CreateTicketDTO,
+        creatorId: string
+    ): Promise<Ticket | null> {
         const { title, type, description, status, customer_id } = data;
 
         if (status === "open") {
@@ -38,6 +41,17 @@ export class CreateTicketUseCase {
             creator_id: creatorId,
         };
 
-        return await this.ticketsRepository.createTicket(ticket);
+        const result = await this.ticketsRepository.createTicket(ticket);
+
+        const creator = { ...result?.creator };
+
+        delete creator.password;
+
+        const response = {
+            ...result,
+            creator,
+        };
+
+        return response as Ticket;
     }
 }

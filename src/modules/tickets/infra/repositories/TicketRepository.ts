@@ -24,8 +24,25 @@ export class TicketsRepository implements ITicketsRepository {
         return ticket;
     }
 
-    async createTicket(ticket: CreateTicketDTO): Promise<Ticket> {
-        const result = this.ormRepo.create(ticket);
-        return await this.ormRepo.save(result);
+    async findById(id: string): Promise<Ticket | null> {
+        const ticket = await this.ormRepo.findOne({
+            where: { id: id },
+        });
+
+        return ticket;
+    }
+
+    async createTicket(data: CreateTicketDTO): Promise<Ticket | null> {
+        const ticket = this.ormRepo.create(data);
+        await this.ormRepo.save(ticket);
+
+        return await this.ormRepo.findOne({
+            where: { id: ticket.id },
+            relations: ["customer", "creator"],
+        });
+    }
+
+    async updateTicket(ticket: Partial<Ticket>): Promise<Ticket> {
+        return await this.ormRepo.save(ticket);
     }
 }
