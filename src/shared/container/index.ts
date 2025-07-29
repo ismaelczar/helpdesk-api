@@ -2,7 +2,9 @@ import { container } from "tsyringe";
 import type { DataSource } from "typeorm";
 import type { ICustomersRepository } from "@/modules/customers/domain/repositories/ICustomersRepository";
 import { CustomersRepository } from "@/modules/customers/infra/CustomersRepository";
+import type { ITicketHistoryRepository } from "@/modules/tickets/domain/repositories/ITicketHistoryRepository";
 import type { ITicketsRepository } from "@/modules/tickets/domain/repositories/ITicketRepository";
+import { TicketHistoryRepository } from "@/modules/tickets/infra/repositories/TicketHistoryRepository";
 import { TicketsRepository } from "@/modules/tickets/infra/repositories/TicketRepository";
 import type { IUsersRepository } from "@/modules/users/domain/repositories/IUserRepository";
 import { UsersRepository } from "@/modules/users/infra/repositories/UserRepository";
@@ -26,5 +28,10 @@ export async function registerSharedProviders(): Promise<void> {
     container.registerSingleton<ITicketsRepository>(
         "TicketsRepository",
         TicketsRepository
+    );
+
+    container.registerSingleton<ITicketHistoryRepository>(
+        "TicketHistoryRepository",
+        TicketHistoryRepository
     );
 }

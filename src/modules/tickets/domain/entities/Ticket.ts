@@ -6,10 +6,13 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { Customer } from "@/modules/customers/domain/entities/Customer";
 import { User } from "@/modules/users/domain/entities/User";
+import { TicketHistory } from "./TicketHistory";
 
 const gerarId = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6);
 
@@ -62,6 +65,9 @@ export class Ticket {
 
     @CreateDateColumn()
     updated_at!: Date;
+
+    @OneToMany(() => TicketHistory, (ticket_history) => ticket_history.ticket)
+    ticket_history!: TicketHistory[];
 
     @BeforeInsert()
     gerarProtocolo() {

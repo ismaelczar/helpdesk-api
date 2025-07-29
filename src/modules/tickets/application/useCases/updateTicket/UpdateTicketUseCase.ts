@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import type { UpdateTicketDTO } from "@/modules/tickets/domain/dto/UpdateTicketDTO";
 import type { Ticket } from "@/modules/tickets/domain/entities/Ticket";
+import type { ITicketHistoryRepository } from "@/modules/tickets/domain/repositories/ITicketHistoryRepository";
 import type { ITicketsRepository } from "@/modules/tickets/domain/repositories/ITicketRepository";
 import { AppError } from "@/shared/core/erros/AppError";
 
@@ -8,7 +9,10 @@ import { AppError } from "@/shared/core/erros/AppError";
 export class UpdatedTicketUseCase {
     constructor(
         @inject("TicketsRepository")
-        private readonly ticketsRepository: ITicketsRepository
+        private readonly ticketsRepository: ITicketsRepository,
+
+        @inject("TicketHistoryRepository")
+        private readonly ticketHistoryRepository: ITicketHistoryRepository
     ) {}
 
     async execute(
@@ -29,7 +33,9 @@ export class UpdatedTicketUseCase {
                 "business"
             );
 
-        const ticket: Partial<Ticket> = {
+        const oldStatus = ticketExist.status;
+
+        const updatedTicketData: Partial<Ticket> = {
             ...ticketExist,
             status: status,
             resolution_notes: resolution_notes,
@@ -37,7 +43,18 @@ export class UpdatedTicketUseCase {
             updated_at: new Date(),
         };
 
-        const result = await this.ticketsRepository.updateTicket(ticket);
+        const result = await this.ticketsRepository.updateTicket(
+            updatedTicketData
+        );
+
+        if (status !== oldStatus) {
+            await this.ticketHistoryRepository.createHistory({
+                ticket_id: ticketExist.id,
+                user_id: assignedAgentId,
+                action: `O status do chamado foi alterado de '${oldStatus}' para '${status}'`,
+                details: resolution_notes,
+            });
+        }
 
         return result;
     }
