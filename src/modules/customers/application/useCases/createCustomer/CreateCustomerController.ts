@@ -21,8 +21,10 @@ export class CreateCustomerController {
     @Body(CreateCustomerDTO)
     async handle(req: Request, res: Response): Promise<Response> {
         const customer = req.body;
+        // biome-ignore lint/style/noNonNullAssertion: <token>
+        const userData = req.user?.email!;
         const useCase = container.resolve(CreateCustomerUseCase);
-        const response = await useCase.execute(customer);
+        const response = await useCase.execute(customer, userData);
 
         return res.status(201).json(response as CreateCustomerDTO);
     }

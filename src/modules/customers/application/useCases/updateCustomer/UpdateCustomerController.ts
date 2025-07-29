@@ -20,9 +20,11 @@ export class UpdateCustomerController {
     @Body(UpdateCustomerDTO)
     @UseMiddleware(ensureAuthenticated)
     async handle(req: Request, res: Response): Promise<Response> {
+        // biome-ignore lint/style/noNonNullAssertion: <token>
+        const userData = req.user?.email!;
         const data = req.body;
         const useCase = container.resolve(UpdateCustomerUseCase);
-        const response = await useCase.execute(data);
+        const response = await useCase.execute(data, userData);
 
         return res.status(200).json(response as UpdateCustomerDTO);
     }
