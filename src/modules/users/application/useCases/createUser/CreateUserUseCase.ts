@@ -1,20 +1,21 @@
 import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import type { User } from "@/modules/users/domain/entities/User";
-import type { IUserRepository } from "@/modules/users/domain/repositories/IUserRepository";
+import type { IUsersRepository } from "@/modules/users/domain/repositories/IUserRepository";
 import { AppError } from "@/shared/core/erros/AppError";
 
 @injectable()
 export class CreateUserUseCase {
     constructor(
         @inject("UserRepository")
-        private readonly userRepository: IUserRepository
+        private readonly userRepository: IUsersRepository
     ) {}
 
     async execute(
         name: string,
         password: string,
-        email: string
+        email: string,
+        role: string
     ): Promise<User> {
         const userExist = await this.userRepository.findByEmail(email);
 
@@ -32,6 +33,7 @@ export class CreateUserUseCase {
             name,
             email,
             password: encryptedPass,
+            role,
         });
 
         return user;
