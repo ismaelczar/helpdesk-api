@@ -7,7 +7,6 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { Customer } from "@/modules/customers/domain/entities/Customer";

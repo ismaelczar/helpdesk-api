@@ -17,11 +17,11 @@ export class CreateUserController {
     })
     @Body(CreateUserDTO)
     async handle(req: Request, res: Response): Promise<Response> {
-        const { name, password, email } = req.body;
+        const { name, password, email, role } = req.body;
 
         const useCase = container.resolve(CreateUserUseCase);
 
-        const result = await useCase.execute(name, password, email);
+        const result = await useCase.execute(name, password, email, role);
 
         return res.status(201).json(result);
     }

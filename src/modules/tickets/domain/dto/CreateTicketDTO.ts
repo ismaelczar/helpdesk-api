@@ -1,14 +1,15 @@
-import { IsIn, IsNotEmpty } from "class-validator";
+import { IsEnum, IsIn, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
+import { TicketType } from "./TicketType";
 
 export class CreateTicketDTO {
     @IsNotEmpty()
     @ApiProperty()
     title!: string;
 
-    @IsNotEmpty()
+    @IsEnum(TicketType)
     @ApiProperty()
-    type!: string;
+    type!: TicketType;
 
     @IsNotEmpty()
     @ApiProperty()

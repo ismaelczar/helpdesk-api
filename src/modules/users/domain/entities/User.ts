@@ -7,21 +7,26 @@ import {
 } from "typeorm";
 import { Ticket } from "@/modules/tickets/domain/entities/Ticket";
 
+export enum UserRole {
+    SUPPORT = "support",
+    ADMIN = "admin",
+}
+
 @Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @Column({ type: "varchar" })
+    @Column()
     name!: string;
 
-    @Column({ type: "varchar" })
+    @Column()
     email!: string;
 
-    @Column({ type: "varchar" })
+    @Column()
     password!: string;
 
-    @CreateDateColumn({ type: "timestamp with time zone" })
+    @CreateDateColumn()
     created_at!: Date;
 
     @OneToMany(() => Ticket, (ticket) => ticket.creator)
@@ -29,4 +34,11 @@ export class User {
 
     @OneToMany(() => Ticket, (ticket) => ticket.assigned_agent)
     assignedTickets!: Ticket[];
+
+    @Column({
+        type: "enum",
+        enum: UserRole,
+        default: UserRole.SUPPORT,
+    })
+    role!: UserRole;
 }
