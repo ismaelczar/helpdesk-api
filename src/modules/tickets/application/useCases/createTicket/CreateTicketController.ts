@@ -22,11 +22,14 @@ export class CreateTicketController {
     @UseMiddleware(ensureAuthenticated)
     async handle(req: Request, res: Response): Promise<Response> {
         // biome-ignore lint/style/noNonNullAssertion: <the id comes through the subject>
-        const creatorId = req.user?.id!;
+        const userId = req.user?.id!;
         const data: CreateTicketDTO = req.body;
 
+        console.log({ data: data });
+        console.log({ USER: userId });
+
         const useCase = container.resolve(CreateTicketUseCase);
-        const response = await useCase.execute(data, creatorId);
+        const response = await useCase.execute(data, userId);
 
         return res.status(201).json(response);
     }

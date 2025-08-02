@@ -23,6 +23,7 @@ export class CreateCustomerController {
         const customer = req.body;
         // biome-ignore lint/style/noNonNullAssertion: <token>
         const userData = req.user?.email!;
+
         const useCase = container.resolve(CreateCustomerUseCase);
         const response = await useCase.execute(customer, userData);
 

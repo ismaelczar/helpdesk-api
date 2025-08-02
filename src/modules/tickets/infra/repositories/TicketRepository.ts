@@ -12,6 +12,22 @@ export class TicketsRepository implements ITicketsRepository {
         this.ormRepo = dataSource.getRepository(Ticket);
     }
 
+    async findAll(): Promise<Ticket[]> {
+        const tickets = await this.ormRepo.find({
+            relations: ["customer", "assigned_agent"],
+        });
+
+        return tickets;
+    }
+
+    async findById(id: string): Promise<Ticket | null> {
+        const ticket = await this.ormRepo.findOne({
+            where: { id: id },
+        });
+
+        return ticket;
+    }
+
     async findDuplicatedOpenTicket(
         type: string,
         customer_id: string,
@@ -19,14 +35,6 @@ export class TicketsRepository implements ITicketsRepository {
     ): Promise<Ticket | null> {
         const ticket = await this.ormRepo.findOne({
             where: { type, customer_id, status },
-        });
-
-        return ticket;
-    }
-
-    async findById(id: string): Promise<Ticket | null> {
-        const ticket = await this.ormRepo.findOne({
-            where: { id: id },
         });
 
         return ticket;

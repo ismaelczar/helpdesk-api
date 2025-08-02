@@ -25,7 +25,7 @@ export class LoginUseCase {
             throw new AppError("Incorrect password", 401, "validation");
 
         // biome-ignore lint/style/noNonNullAssertion: <Token>
-        const token = sign({ email }, process.env.JWT_SECRET!, {
+        const token = sign({ id: userExist.id }, process.env.JWT_SECRET!, {
             subject: `${userExist.id}`,
             expiresIn: "1h",
         });

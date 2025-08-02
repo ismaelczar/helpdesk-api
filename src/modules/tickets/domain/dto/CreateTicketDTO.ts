@@ -1,4 +1,4 @@
-import { IsEnum, IsIn, IsNotEmpty } from "class-validator";
+import { IsEnum, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
 import { TicketType } from "./TicketType";
 
@@ -16,14 +16,12 @@ export class CreateTicketDTO {
     description!: string;
 
     @IsNotEmpty()
-    @IsIn(["open", "in_progress", "closed", "pending"])
-    @ApiProperty()
-    status!: "open" | "in_progress" | "closed" | "pending";
-
-    @IsNotEmpty()
     @ApiProperty()
     customer_id!: string;
 
     @ApiProperty()
     creator_id!: string;
+
+    @ApiProperty()
+    assigned_agent_id!: string;
 }
