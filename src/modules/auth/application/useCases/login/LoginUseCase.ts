@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: <token exists> */
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
@@ -24,13 +25,11 @@ export class LoginUseCase {
         if (!passwordMatch)
             throw new AppError("Incorrect password", 401, "validation");
 
-        // biome-ignore lint/style/noNonNullAssertion: <Token>
         const token = sign({ id: userExist.id }, process.env.JWT_SECRET!, {
             subject: `${userExist.id}`,
             expiresIn: "1h",
         });
 
-        // biome-ignore lint/style/noNonNullAssertion: <Token>
         const refreshToken = sign({ email }, process.env.JWT_SECRET!, {
             subject: email,
             expiresIn: "1d",

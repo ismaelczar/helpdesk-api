@@ -14,7 +14,7 @@ export class LoginController {
     @ApiResponse({
         statusCode: 200,
         dtoClass: LoginResponse,
-        description: "Login realizado com sucesso.",
+        description: "Login successful",
     })
     @Body(ILoginDTO)
     async handle(req: Request, res: Response): Promise<Response> {
@@ -22,6 +22,6 @@ export class LoginController {
         const useCase = container.resolve(LoginUseCase);
 
         const result = await useCase.execute(email, password);
-        return res.json(result);
+        return res.status(200).json(result);
     }
 }
