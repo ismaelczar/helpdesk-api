@@ -7,8 +7,8 @@ import { AppError } from "@/shared/core/erros/AppError";
 @injectable()
 export class CreateUserUseCase {
     constructor(
-        @inject("UserRepository")
-        private readonly userRepository: IUsersRepository
+        @inject("UsersRepository")
+        private readonly usersRepository: IUsersRepository
     ) {}
 
     async execute(
@@ -16,8 +16,8 @@ export class CreateUserUseCase {
         password: string,
         email: string,
         role: string
-    ): Promise<User> {
-        const userExist = await this.userRepository.findByEmail(email);
+    ): Promise<Omit<User, "password">> {
+        const userExist = await this.usersRepository.findByEmail(email);
 
         if (userExist) {
             throw new AppError(
@@ -29,13 +29,14 @@ export class CreateUserUseCase {
 
         const encryptedPass = await hash(password, 8);
 
-        const user = await this.userRepository.createUser({
+        const user = await this.usersRepository.createUser({
             name,
             email,
             password: encryptedPass,
             role,
         });
 
-        return user;
+        const { password: _, ...safeUser } = user;
+        return safeUser;
     }
 }

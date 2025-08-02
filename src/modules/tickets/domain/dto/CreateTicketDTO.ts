@@ -21,4 +21,7 @@ export class CreateTicketDTO {
 
     @ApiProperty()
     creator_id!: string;
+
+    @ApiProperty()
+    assigned_agent_id!: string;
 }

@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-interface TokenPayload {
-    sub: string;
+interface JwtPayload {
+    id: string;
     email: string;
 }
 
@@ -13,22 +13,25 @@ export function ensureAuthenticated(
 ) {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader) return res.status(401).json({ message: "TOKEN MISSING" });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Token missing or malformed" });
+    }
 
-    const [, token] = authHeader.split(" ");
+    const token = authHeader.split(" ")[1];
+    const jwtSecret = process.env.JWT_SECRET;
+
+    if (!jwtSecret) {
+        return res.status(500).json({ message: "JWT_SECRET not configured" });
+    }
 
     try {
-        // biome-ignore lint/style/noNonNullAssertion: <TOKEN EXIST>
-        const decoded = verify(token, process.env.JWT_SECRET!);
-        const { sub } = decoded as TokenPayload;
-
+        const decoded = verify(token, jwtSecret) as JwtPayload;
         req.user = {
-            id: sub,
-            email: sub,
+            id: decoded.id,
+            email: decoded.email,
         };
-
         return next();
-    } catch (error) {
-        return res.status(401).json({ message: "Invalid token", error });
+    } catch {
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
 }

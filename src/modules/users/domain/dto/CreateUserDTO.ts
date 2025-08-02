@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEmail, IsIn, IsNotEmpty, MinLength } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
 
 export class CreateUserDTO {
@@ -22,6 +22,7 @@ export class CreateUserDTO {
     password!: string;
 
     @IsNotEmpty()
+    @IsIn(["admin", "support"])
     @ApiProperty()
-    role!: string;
+    role!: "admin" | "suport";
 }

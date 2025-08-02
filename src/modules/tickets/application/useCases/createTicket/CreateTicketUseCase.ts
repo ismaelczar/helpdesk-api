@@ -12,9 +12,10 @@ export class CreateTicketUseCase {
     ) {}
     async execute(
         data: CreateTicketDTO,
-        creatorId: string
+        userId: string
     ): Promise<Ticket | null> {
-        const { title, type, description, customer_id } = data;
+        const { title, type, description, customer_id, assigned_agent_id } =
+            data;
 
         const alreadyOpenTicketForType =
             await this.ticketsRepository.findDuplicatedOpenTicket(
@@ -36,7 +37,8 @@ export class CreateTicketUseCase {
             status: "open",
             description,
             customer_id,
-            creator_id: creatorId,
+            creator_id: userId,
+            assigned_agent_id,
         };
 
         const result = await this.ticketsRepository.createTicket(ticket);

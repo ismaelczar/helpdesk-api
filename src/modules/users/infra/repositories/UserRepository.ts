@@ -13,9 +13,9 @@ export class UsersRepository implements IUsersRepository {
     }
 
     async createUser(data: CreateUserDTO): Promise<User> {
-        const { name, password, email } = data;
+        const { name, password, email, role } = data;
 
-        const user = this.ormRepo.create({ name, password, email });
+        const user = this.ormRepo.create({ name, password, email, role });
 
         await this.ormRepo.save(user);
 
