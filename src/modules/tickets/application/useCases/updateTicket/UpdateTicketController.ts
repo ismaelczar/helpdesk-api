@@ -1,8 +1,9 @@
 import type { Request, Response } from "express";
 import { container } from "tsyringe";
 import { ensureAuthenticated } from "@/main/http/middlewares/ensureAuthenticated";
-import type { UpdateTicketDTO } from "@/modules/tickets/domain/dto/UpdateTicketDTO";
+import { UpdateTicketDTO } from "@/modules/tickets/domain/dto/UpdateTicketDTO";
 import { ApiResponse } from "@/shared/http/docs/decorators/ApiResponse";
+import { Body } from "@/shared/http/docs/decorators/Body";
 import { Controller } from "@/shared/http/docs/decorators/Controller";
 import { Put } from "@/shared/http/docs/decorators/methods/Put";
 import { UseMiddleware } from "@/shared/http/docs/decorators/UseMiddleware";
@@ -16,6 +17,7 @@ export class UpdatedTicketController {
         description: "Ticket updated successfully",
     })
     @UseMiddleware(ensureAuthenticated)
+    @Body(UpdateTicketDTO)
     async handle(req: Request, res: Response): Promise<Response> {
         const authenticatedUserId = req.user?.id!;
         const ticketId = req.params.id!;
