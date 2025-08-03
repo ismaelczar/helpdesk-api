@@ -1,11 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-interface JwtPayload {
-    id: string;
-    email: string;
-}
-
 export function ensureAuthenticated(
     req: Request,
     res: Response,
@@ -25,10 +20,11 @@ export function ensureAuthenticated(
     }
 
     try {
-        const decoded = verify(token, jwtSecret) as JwtPayload;
+        const decoded = verify(token, jwtSecret) as any;
         req.user = {
             id: decoded.id,
             email: decoded.email,
+            role: decoded.role,
         };
         return next();
     } catch {

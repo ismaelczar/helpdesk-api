@@ -11,7 +11,7 @@ export class CreateCustomerDTO {
     cnpj!: string;
 
     @IsPhoneNumber("BR", {
-        message: "O formato do número está inválido, formato: +5500987654321",
+        message: "Example: +5500987654321",
     })
     @ApiProperty()
     phone_number!: string;

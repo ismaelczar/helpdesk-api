@@ -1,11 +1,11 @@
-import { IsIn, IsNotEmpty } from "class-validator";
+import { IsEnum } from "class-validator";
 import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
+import { StatusType } from "./StatusType";
 
 export class UpdateTicketDTO {
-    @IsNotEmpty()
-    @IsIn(["open", "in_progress", "closed", "pending"])
+    @IsEnum(StatusType)
     @ApiProperty()
-    status!: "open" | "in_progress" | "closed" | "pending";
+    status!: StatusType;
 
     @ApiProperty()
     resolution_notes!: string;

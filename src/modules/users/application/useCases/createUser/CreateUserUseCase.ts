@@ -15,7 +15,7 @@ export class CreateUserUseCase {
         name: string,
         password: string,
         email: string,
-        role: string
+        role: "admin" | "suport"
     ): Promise<Omit<User, "password">> {
         const userExist = await this.usersRepository.findByEmail(email);
 

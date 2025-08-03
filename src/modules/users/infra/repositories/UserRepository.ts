@@ -12,12 +12,10 @@ export class UsersRepository implements IUsersRepository {
         this.ormRepo = dataSource.getRepository(User);
     }
 
-    async createUser(data: CreateUserDTO): Promise<User> {
-        const { name, password, email, role } = data;
-
-        const user = this.ormRepo.create({ name, password, email, role });
-
-        await this.ormRepo.save(user);
+    async findById(id: string): Promise<User | null> {
+        const user = this.ormRepo.findOne({
+            where: { id: id },
+        });
 
         return user;
     }
@@ -26,6 +24,16 @@ export class UsersRepository implements IUsersRepository {
         const user = await this.ormRepo.findOne({
             where: { email },
         });
+
+        return user;
+    }
+
+    async createUser(data: CreateUserDTO): Promise<User> {
+        const { name, password, email, role } = data;
+
+        const user = this.ormRepo.create({ name, password, email, role });
+
+        await this.ormRepo.save(user);
 
         return user;
     }

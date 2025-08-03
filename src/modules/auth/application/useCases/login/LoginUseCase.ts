@@ -25,10 +25,14 @@ export class LoginUseCase {
         if (!passwordMatch)
             throw new AppError("Incorrect password", 401, "validation");
 
-        const token = sign({ id: userExist.id }, process.env.JWT_SECRET!, {
-            subject: `${userExist.id}`,
-            expiresIn: "1h",
-        });
+        const token = sign(
+            { id: userExist.id, role: userExist.role },
+            process.env.JWT_SECRET!,
+            {
+                subject: `${userExist.id}`,
+                expiresIn: "1h",
+            }
+        );
 
         const refreshToken = sign({ email }, process.env.JWT_SECRET!, {
             subject: email,

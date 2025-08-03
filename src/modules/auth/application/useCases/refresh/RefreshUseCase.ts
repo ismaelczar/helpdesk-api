@@ -4,7 +4,6 @@ import { getCash } from "@/shared/providers/redis/cashHelper";
 
 export class RefreshUseCase {
     async execute(refreshToken: string): Promise<string> {
-        // biome-ignore lint/style/noNonNullAssertion: <token>
         const decoded = verify(refreshToken, process.env.JWT_SECRET!) as any;
 
         const savedRefreshToken = await getCash(

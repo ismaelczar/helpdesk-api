@@ -4,10 +4,6 @@ import { ApiProperty } from "@/shared/http/docs/decorators/ApiProperty";
 export class UpdateCustomerDTO {
     @IsNotEmpty()
     @ApiProperty()
-    id!: string;
-
-    @IsNotEmpty()
-    @ApiProperty()
     corporate_name!: string;
 
     @IsNotEmpty()
