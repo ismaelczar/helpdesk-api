@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import type { DataSource, Repository } from "typeorm";
 import type { CreateTicketDTO } from "../../domain/dto/CreateTicketDTO";
+import type { FilterTicketsDTO } from "../../domain/dto/FilterTicketsDTO";
 import { Ticket } from "../../domain/entities/Ticket";
 import type { ITicketsRepository } from "../../domain/repositories/ITicketRepository";
 
@@ -38,6 +39,52 @@ export class TicketsRepository implements ITicketsRepository {
         });
 
         return ticket;
+    }
+
+    async findWithFilters(filters: FilterTicketsDTO): Promise<Ticket[]> {
+        const query = this.ormRepo
+            .createQueryBuilder("ticket")
+            .leftJoinAndSelect("ticket.customer", "customer")
+            .leftJoinAndSelect("ticket.assigned_agent", "assigned_agent");
+
+        if (filters.status) {
+            query.andWhere("ticket.status = :status", {
+                status: filters.status,
+            });
+        }
+
+        if (filters.type) {
+            query.andWhere("ticket.type = :type", { type: filters.type });
+        }
+
+        if (filters.protocol) {
+            query.andWhere("ticket.protocol = :protocol", {
+                protocol: filters.protocol,
+            });
+        }
+
+        if (filters.customer_id) {
+            query.andWhere("ticket.customer_id = :customer_id", {
+                customer_id: filters.customer_id,
+            });
+        }
+
+        if (filters.created_from) {
+            query.andWhere("ticket.created_from >= :from", {
+                from: filters.created_from,
+            });
+        }
+
+        if (filters.created_to) {
+            query.andWhere("ticket.created_at <= :to", {
+                to: filters.created_to,
+            });
+        }
+
+        // Opcional: ordenação
+        query.orderBy("ticket.created_at", "DESC");
+
+        return await query.getMany();
     }
 
     async createTicket(data: CreateTicketDTO): Promise<Ticket | null> {
