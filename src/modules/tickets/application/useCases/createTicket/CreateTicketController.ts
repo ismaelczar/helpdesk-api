@@ -16,17 +16,13 @@ export class CreateTicketController {
     @ApiResponse({
         statusCode: 201,
         dtoClass: CreateTicketResponse,
-        description: "Chamado criado com sucesso",
+        description: "Ticket created successfully",
     })
     @Body(CreateTicketDTO)
     @UseMiddleware(ensureAuthenticated)
     async handle(req: Request, res: Response): Promise<Response> {
-        // biome-ignore lint/style/noNonNullAssertion: <the id comes through the subject>
         const userId = req.user?.id!;
         const data: CreateTicketDTO = req.body;
-
-        console.log({ data: data });
-        console.log({ USER: userId });
 
         const useCase = container.resolve(CreateTicketUseCase);
         const response = await useCase.execute(data, userId);

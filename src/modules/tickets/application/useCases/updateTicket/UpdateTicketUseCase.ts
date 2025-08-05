@@ -16,7 +16,7 @@ export class UpdatedTicketUseCase {
     ) {}
 
     async execute(
-        assignedAgentId: string,
+        authenticatedUserId: string,
         data: UpdateTicketDTO,
         ticketId: string
     ): Promise<Ticket> {
@@ -39,7 +39,7 @@ export class UpdatedTicketUseCase {
             ...ticketExist,
             status: status,
             resolution_notes: resolution_notes,
-            assigned_agent_id: assignedAgentId,
+            assigned_agent_id: authenticatedUserId,
             updated_at: new Date(),
         };
 
@@ -50,9 +50,10 @@ export class UpdatedTicketUseCase {
         if (status !== oldStatus) {
             await this.ticketHistoryRepository.createHistory({
                 ticket_id: ticketExist.id,
-                user_id: assignedAgentId,
-                action: `O status do chamado foi alterado de '${oldStatus}' para '${status}'`,
-                details: resolution_notes,
+                user_id: authenticatedUserId,
+                action: `Changed`,
+                details: `Status changed from ${oldStatus} to ${status}
+`,
             });
         }
 

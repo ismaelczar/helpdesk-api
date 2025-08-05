@@ -22,7 +22,7 @@ export class CreateUserDTO {
     password!: string;
 
     @IsNotEmpty()
-    @IsIn(["admin", "support"])
+    @IsIn(["admin", "support", "owner"])
     @ApiProperty()
-    role!: "admin" | "suport";
+    role!: "admin" | "suport" | "owner";
 }

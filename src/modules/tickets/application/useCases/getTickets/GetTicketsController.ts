@@ -12,7 +12,28 @@ export class GetTicketsController {
     @UseMiddleware(ensureAuthenticated)
     async handle(req: Request, res: Response): Promise<Response> {
         const useCase = container.resolve(GetTicketsUseCase);
-        const response = await useCase.execute();
+
+        const {
+            status,
+            type,
+            protocol,
+            customer_id,
+            created_from,
+            created_to,
+        } = req.query;
+
+        const response = await useCase.execute({
+            status: status?.toString(),
+            type: type?.toString(),
+            protocol: protocol?.toString(),
+            customer_id: customer_id?.toString(),
+            created_from: created_from
+                ? new Date(created_from.toString())
+                : undefined,
+            created_to: created_to
+                ? new Date(created_to.toString())
+                : undefined,
+        });
 
         return res.status(200).json(response);
     }

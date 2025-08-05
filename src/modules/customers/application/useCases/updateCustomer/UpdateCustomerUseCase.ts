@@ -2,31 +2,24 @@ import { inject, injectable } from "tsyringe";
 import type { UpdateCustomerDTO } from "@/modules/customers/domain/dto/UpdateCustomerDTO";
 import type { Customer } from "@/modules/customers/domain/entities/Customer";
 import type { ICustomersRepository } from "@/modules/customers/domain/repositories/ICustomersRepository";
-import type { IUsersRepository } from "@/modules/users/domain/repositories/IUserRepository";
 import { AppError } from "@/shared/core/erros/AppError";
 
 @injectable()
 export class UpdateCustomerUseCase {
     constructor(
         @inject("CustomersRepository")
-        private readonly customersRepository: ICustomersRepository,
-
-        @inject("UsersRepository")
-        private readonly usersRepository: IUsersRepository
+        private readonly customersRepository: ICustomersRepository
     ) {}
     async execute(
         data: UpdateCustomerDTO,
-        userData: string
+        customerId: string
     ): Promise<Customer> {
-        const customerExist = await this.customersRepository.findById(data.id);
+        const customerExist = await this.customersRepository.findById(
+            customerId
+        );
 
         if (!customerExist)
             throw new AppError("Customer not found", 404, "business");
-
-        const user = await this.usersRepository.findByEmail(userData);
-
-        if (user?.role !== "admin")
-            throw new AppError("User not authorized", 403, "business");
 
         const customer: Customer = {
             id: customerExist.id,

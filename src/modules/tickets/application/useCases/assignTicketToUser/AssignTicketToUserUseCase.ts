@@ -32,8 +32,8 @@ export class AssignTicketToUserUseCase {
         await this.ticketsHistoryRepository.createHistory({
             ticket_id: ticket.id,
             user_id: assignedAgentId,
-            action: `O chamado foi direcionado para o suporte'`,
-            details: "",
+            action: `Assigned`,
+            details: `Assigned to agent ${assignedAgentId}`,
         });
 
         return ticketUpdated;
