@@ -10,6 +10,7 @@ export interface ITicketsRepository {
         status: string,
         customer_id: string
     ): Promise<Ticket | null>;
+    findWithFilters(filters: FilterTicketsDTO): Promise<Ticket[]>;
 
     findWithFilters(filters: FilterTicketsDTO): Promise<Ticket[]>;
     findByType(): Promise<Ticket[]>;
