@@ -1,12 +1,12 @@
 import { sign, verify } from "jsonwebtoken";
 import { AppError } from "@/shared/core/erros/AppError";
-import { getCash } from "@/shared/providers/redis/cashHelper";
+import { getCache } from "@/shared/providers/redis/cashHelper";
 
 export class RefreshUseCase {
     async execute(refreshToken: string): Promise<string> {
         const decoded = verify(refreshToken, process.env.JWT_SECRET!) as any;
 
-        const savedRefreshToken = await getCash(
+        const savedRefreshToken = await getCache(
             `refreshToken:${decoded.email}`
         );
 
