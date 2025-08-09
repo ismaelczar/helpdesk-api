@@ -1,11 +1,11 @@
 import { redis } from "./RedisClient";
 
-export async function getCash<T = any>(key: string): Promise<T | null> {
+export async function getCache<T = any>(key: string): Promise<T | null> {
     const data = await redis.get(key);
     return data ? JSON.parse(data) : null;
 }
 
-export async function setChash(
+export async function setCache(
     key: string,
     value: any,
     ttlInSeconds = 300
@@ -13,6 +13,6 @@ export async function setChash(
     await redis.set(key, JSON.stringify(value), "EX", ttlInSeconds);
 }
 
-export async function deleteCash(key: string): Promise<void> {
+export async function deleteCache(key: string): Promise<void> {
     await redis.del(key);
 }

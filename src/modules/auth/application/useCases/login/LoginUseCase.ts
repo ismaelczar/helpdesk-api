@@ -5,7 +5,7 @@ import { inject, injectable } from "tsyringe";
 import type { LoginResponse } from "@/modules/auth/domain/dto/LoginResponse";
 import type { IUsersRepository } from "@/modules/users/domain/repositories/IUserRepository";
 import { AppError } from "@/shared/core/erros/AppError";
-import { setChash } from "@/shared/providers/redis/cashHelper";
+import { setCache } from "@/shared/providers/redis/cashHelper";
 
 @injectable()
 export class LoginUseCase {
@@ -39,7 +39,7 @@ export class LoginUseCase {
             expiresIn: "1d",
         });
 
-        await setChash(`refreshToken:${email}`, refreshToken, 60 * 60 * 24);
+        await setCache(`refreshToken:${email}`, refreshToken, 60 * 60 * 24);
 
         return { token, refreshToken };
     }
