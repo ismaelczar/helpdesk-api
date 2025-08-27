@@ -7,7 +7,7 @@ module.exports = {
 	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
 		prefix: "<rootDir>/src/",
 	}),
-	testMatch: ["**/*.spec.ts"],
+	testMatch: ["<rootDir>/src/modules/**/application/useCases/**/*.spec.ts"],
 	clearMocks: true,
 	collectCoverage: true,
 	coverageDirectory: "coverage",

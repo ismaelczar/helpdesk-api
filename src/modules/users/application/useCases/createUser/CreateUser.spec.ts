@@ -6,7 +6,7 @@ import { makeUser } from "@/shared/test/factories/userFactory";
 import { FakeUserRepository } from "@/shared/test/fakes/FakeUserRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
-describe("CreateUserUseCase", () => {
+describe("CreateUser", () => {
     let fakeUserRepository: FakeUserRepository;
     let createUserUseCase: CreateUserUseCase;
 
